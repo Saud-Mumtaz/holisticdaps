@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Holistic Curriculum Matrix | Professional Institution</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f4f7fc;
+            margin: 0;
+            padding: 24px 16px;
+            color: #1a2c3e;
+        }
+
+        .curriculum-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            padding: 20px 20px 30px 20px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0 0 6px 0;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #1e466e, #2c6e9e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .sub {
+            color: #4a627a;
+            border-left: 4px solid #2c7da0;
+            padding-left: 16px;
+            margin: 8px 0 24px 0;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        /* filter bar */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+            background: #f0f4f9;
+            padding: 16px 20px;
+            border-radius: 60px;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 140px;
+        }
+
+        .filter-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #2c5a7a;
+        }
+
+        select {
+            background: white;
+            border: 1px solid #cbdde9;
+            border-radius: 40px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #0a2b3e;
+            cursor: pointer;
+            transition: 0.2s;
+            outline: none;
+        }
+
+        select:hover {
+            border-color: #2c7da0;
+        }
+
+        .reset-btn {
+            background: #e9eef3;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #2c5a7a;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 22px;
+        }
+
+        .reset-btn:hover {
+            background: #d4e0ea;
+            color: #0f3b4f;
+        }
+
+        /* table wrapper - horizontal scroll on mobile */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 20px;
+            border: 1px solid #e2edf2;
+            background: white;
+        }
+
+        .curriculum-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 780px;
+        }
+
+        .curriculum-table th {
+            background: #1e3b4f;
+            color: white;
+            padding: 14px 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-align: center;
+            border-right: 1px solid #2f5e7a;
+        }
+
+        .curriculum-table th:last-child {
+            border-right: none;
+        }
+
+        .curriculum-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #e6edf2;
+            vertical-align: top;
+            background-color: #ffffff;
+        }
+
+        .curriculum-table tr:hover td {
+            background-color: #f9fdfe;
+        }
+
+        .day-cell {
+            font-weight: 700;
+            background-color: #f8fbfd;
+            color: #1e466e;
+            width: 100px;
+            text-align: center;
+            border-right: 1px solid #e2edf2;
+        }
+
+        .grade-cell {
+            font-weight: 600;
+            background-color: #fafcfd;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .activity {
+            font-size: 0.82rem;
+            line-height: 1.45;
+        }
+
+        .activity strong {
+            color: #1f6392;
+            font-weight: 600;
+            display: inline-block;
+            min-width: 70px;
+        }
+
+        .activity-item {
+            margin-bottom: 8px;
+        }
+
+        .badge-domain {
+            display: inline-block;
+            background: #eef2fa;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 30px;
+            color: #2c5a7a;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            font-size: 1rem;
+            color: #6b8faa;
+        }
+
+        footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #6c8eaa;
+            border-top: 1px solid #e0ecf2;
+            padding-top: 18px;
+        }
+    </style>
+</head>
+<body>
+<div class="curriculum-container">
+    <h1>📚 Holistic Development Matrix</h1>
+    <div class="sub">Inquiry‑Based · Competency‑Focused · Tarbiyah Integrated</div>
+
+    <div class="filter-bar">
+        <div class="filter-group">
+            <label>📅 Filter by Day</label>
+            <select id="dayFilter">
+                <option value="all">All days</option>
+                <option value="Monday">Monday – Physical</option>
+                <option value="Tuesday">Tuesday – Intellectual</option>
+                <option value="Wednesday">Wednesday – Moral & Spiritual</option>
+                <option value="Thursday">Thursday – Social & Communication</option>
+                <option value="Friday">Friday – Practical Life</option>
+                <option value="Saturday">Saturday – Creative & Entrepreneurship</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>🎓 Filter by Grade</label>
+            <select id="gradeFilter">
+                <option value="all">All grades</option>
+                <option value="Nursery">Nursery</option>
+                <option value="LKG">LKG</option>
+                <option value="UKG">UKG</option>
+                <option value="Grade 1">Grade 1</option>
+                <option value="Grade 2">Grade 2</option>
+                <option value="Grade 3">Grade 3</option>
+                <option value="Grade 4">Grade 4</option>
+                <option value="Grade 5">Grade 5</option>
+                <option value="Grade 6">Grade 6</option>
+                <option value="Grade 7">Grade 7</option>
+                <option value="Grade 8">Grade 8</option>
+            </select>
+        </div>
+        <button class="reset-btn" id="resetFilters">⟳ Reset filters</button>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="curriculum-table" id="curriculumTable">
+            <thead>
+                <tr><th>Day</th><th>Grade</th><th>Activity A (Guided / Core)</th><th>Activity B (Peer / Extended)</th></tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- dynamic rows from JS -->
+            </tbody>
+        </table>
+    </div>
+    <footer>Professional Academic Design | Vertical Alignment | 21st Century Skills (C/CT/CR/CM)</footer>
+</div>
+
+<script>
+    // ---------- CURRICULUM DATA (exactly from redesigned matrix) ----------
+    const curriculumData = [
+        // MONDAY - Physical Development
+        { day: "Monday", grade: "Nursery", activityA: "🏐 Balloon Tap (sustained air time)", activityB: "🐻 Animal Walks (Bear, Frog) with verbal cues" },
+        { day: "Monday", grade: "LKG", activityA: "🔄 Hoop Jump & Crawl (patterned)", activityB: "⚾ Soft ball Toss-Catch (static)" },
+        { day: "Monday", grade: "UKG", activityA: "⚖️ Floor Tape Balance Beam (heel-to-toe)", activityB: "🪢 Sack Race (core engagement)" },
+        { day: "Monday", grade: "Grade 1", activityA: "👭 Three-Legged Race (verbal synchronization)", activityB: "🔄 Hula Hoop Pass Circle (non-verbal)" },
+        { day: "Monday", grade: "Grade 2", activityA: "🏋️ Relay with Light Weights (control phase)", activityB: "⛰️ Skipping Rope (rhythmic pacing)" },
+        { day: "Monday", grade: "Grade 3", activityA: "🧗 Obstacle Crawl (under tables)", activityB: "🪢 Tug of War (isometric tension)" },
+        { day: "Monday", grade: "Grade 4", activityA: "🏃 Fitness Circuit (Jacks, Squats, Lunges)", activityB: "💪 Team Push-up Challenge (form focus)" },
+        { day: "Monday", grade: "Grade 5", activityA: "🥤 Minute-to-Win-It: Cup Stack", activityB: "🪜 Agility Ladder (Ickey Shuffle)" },
+        { day: "Monday", grade: "Grade 6", activityA: "⏱️ 3-Minute Non-stop Run (heart rate awareness)", activityB: "🤝 Partner Resistance Band Pull (reciprocal)" },
+        { day: "Monday", grade: "Grade 7", activityA: "⛰️ Bootcamp (Burpees, Planks, Mountain Climbers)", activityB: "🧠 Fitness Quiz (Benefits of Exercise) - Cognitive" },
+        { day: "Monday", grade: "Grade 8", activityA: "🏀 Sports Relay (Dribble-Kick combo)", activityB: "❤️ Heart Rate Measurement (Recovery analysis)" },
+        
+        // TUESDAY - Intellectual
+        { day: "Tuesday", grade: "Nursery", activityA: "🎨 Color Sorting (bowls & blocks)", activityB: "🔺 Shape Hunt (environmental print)" },
+        { day: "Tuesday", grade: "LKG", activityA: "🃏 Memory Matching Cards (animals)", activityB: "❓ 'What's Missing?' (working memory)" },
+        { day: "Tuesday", grade: "UKG", activityA: "🔢 Number Puzzle (sequential 1-10)", activityB: "🎤 Rhyming Words Slap (phonological)" },
+        { day: "Tuesday", grade: "Grade 1", activityA: "➕ Math Bingo (addition within 10)", activityB: "🧩 Riddle Race (visual cues)" },
+        { day: "Tuesday", grade: "Grade 2", activityA: "📊 Pattern Completion (AB, AAB, ABC)", activityB: "🗺️ Treasure Hunt (written clues)" },
+        { day: "Tuesday", grade: "Grade 3", activityA: "🌉 STEM: Paper Bridge (coin weight test)", activityB: "🧩 Logic Grid Puzzle (simple 2x2)" },
+        { day: "Tuesday", grade: "Grade 4", activityA: "🔐 Code Breaking (Caesar cipher shift)", activityB: "🏺 Estimation Jar (quantity approximation)" },
+        { day: "Tuesday", grade: "Grade 5", activityA: "📐 Tangram Challenges (silhouette)", activityB: "💡 Brain Teaser Competition (lateral thinking)" },
+        { day: "Tuesday", grade: "Grade 6", activityA: "🎙️ Debate: 'Online vs. Offline Learning'", activityB: "✒️ Innovation Model: Design a new pen (CR)" },
+        { day: "Tuesday", grade: "Grade 7", activityA: "🔓 Escape Room: 5 Locks (math/clues)", activityB: "📝 Analytical Writing: Solve a school problem" },
+        { day: "Tuesday", grade: "Grade 8", activityA: "🌍 Mock UN: Water/Energy Crisis", activityB: "🎲 Design a Board Game Rulebook (Systems thinking)" },
+        
+        // WEDNESDAY - Moral & Spiritual (Tarbiyah)
+        { day: "Wednesday", grade: "Nursery", activityA: "😊 Smile Greeting (5 friends)", activityB: "🤲 Sharing Circle (Pass toy & 'Thank you')" },
+        { day: "Wednesday", grade: "LKG", activityA: "🙏 'Alhamdulillah' Walk (3 things)", activityB: "💬 Kind Words Practice ('You are nice')" },
+        { day: "Wednesday", grade: "UKG", activityA: "🌞 Sunnah Smile Challenge", activityB: "🤝 Helping Hands Chart (teacher records)" },
+        { day: "Wednesday", grade: "Grade 1", activityA: "🌳 Gratitude Tree (leaf writing)", activityB: "👫 Role Play: Helping a sad friend" },
+        { day: "Wednesday", grade: "Grade 2", activityA: "🏺 Good Deed Jar (anonymous paper slip)", activityB: "📖 Seerah: Prophet's kindness to children" },
+        { day: "Wednesday", grade: "Grade 3", activityA: "⏳ Role Play: Waiting in line calmly (Sabr)", activityB: "🎁 Charity Box Design (local cause)" },
+        { day: "Wednesday", grade: "Grade 4", activityA: "❤️ Hadith: 'Love for brother...' discussion", activityB: "🎭 Honesty Skit (lost item scenario)" },
+        { day: "Wednesday", grade: "Grade 5", activityA: "🖋️ Reflective Writing: 'A time I showed courage'", activityB: "🕊️ Forgiveness Circle (Saying sorry & accepting)" },
+        { day: "Wednesday", grade: "Grade 6", activityA: "👟 Prophets' Stories: 'Walk in their shoes'", activityB: "🏷️ Values Auction (Bid on kindness/honesty)" },
+        { day: "Wednesday", grade: "Grade 7", activityA: "😌 Anger Management via Sunnah (sit down/practise)", activityB: "📓 Self-Accounting (Muhasabah journal)" },
+        { day: "Wednesday", grade: "Grade 8", activityA: "🏅 Islamic Leadership Workshop (responsibility)", activityB: "🧹 Community Service Planning (Adopt a corner)" },
+        
+        // THURSDAY - Social & Communication
+        { day: "Thursday", grade: "Nursery", activityA: "🧸 Puppet Talk (Teacher asks name)", activityB: "🚌 Group Rhyme: Wheels on the Bus (actions)" },
+        { day: "Thursday", grade: "LKG", activityA: "🏀 Pass the Ball: 'My favorite color'", activityB: "📖 Story Circle: Add one word" },
+        { day: "Thursday", grade: "UKG", activityA: "🫂 Action Rhyme (Clap, Spin, Jump) pairs", activityB: "📞 Telephone Game (Whisper message)" },
+        { day: "Thursday", grade: "Grade 1", activityA: "🎤 Show & Tell (2 sentences)", activityB: "🎨 Partner Drawing (Describe, don't point)" },
+        { day: "Thursday", grade: "Grade 2", activityA: "🎙️ Classroom Interview (3 questions)", activityB: "📖 Team Storytelling (1 sentence each)" },
+        { day: "Thursday", grade: "Grade 3", activityA: "👥 Group Presentation: 'Our favorite game'", activityB: "🔄 Storytelling Chain (Change ending)" },
+        { day: "Thursday", grade: "Grade 4", activityA: "💰 Classroom Market (Buy/Sell play money)", activityB: "🗣️ Discussion: Welcome a new student" },
+        { day: "Thursday", grade: "Grade 5", activityA: "🎤 Interview Activity (Teacher's job)", activityB: "🦸 Public Speaking: 'My Hero' (1 min)" },
+        { day: "Thursday", grade: "Grade 6", activityA: "🎙️ Assembly Anchoring Practice", activityB: "🧭 Leadership Game (Guide blindfolded)" },
+        { day: "Thursday", grade: "Grade 7", activityA: "🎧 Podcast Activity (2-min advice show)", activityB: "⚖️ Group Debate: 'Ban Homework?'" },
+        { day: "Thursday", grade: "Grade 8", activityA: "🎤 Public Speaking Competition (2 min)", activityB: "📋 Leadership Workshop (Run a meeting)" },
+        
+        // FRIDAY - Practical Life Skills
+        { day: "Friday", grade: "Nursery", activityA: "👕 Buttoning a large shirt (frame)", activityB: "🧼 Hand washing (song method)" },
+        { day: "Friday", grade: "LKG", activityA: "🧺 Folding napkin (triangle)", activityB: "💧 Pouring water (jug to cup, no spill)" },
+        { day: "Friday", grade: "UKG", activityA: "👟 Tying shoelaces (practice board)", activityB: "🧘 Spreading & rolling mat" },
+        { day: "Friday", grade: "Grade 1", activityA: "🎒 Packing school bag (4 items list)", activityB: "🧽 Cleaning desk (wet wipe)" },
+        { day: "Friday", grade: "Grade 2", activityA: "🥚 Peeling a boiled egg (safe)", activityB: "📚 Arranging books by size" },
+        { day: "Friday", grade: "Grade 3", activityA: "🥪 Making a simple sandwich (no knife)", activityB: "💧 Watering plants (volume control)" },
+        { day: "Friday", grade: "Grade 4", activityA: "🪡 Sewing a large button (fabric)", activityB: "🧰 Organizing tool tray (mock tools)" },
+        { day: "Friday", grade: "Grade 5", activityA: "🩹 Applying bandage (friend's hand)", activityB: "💰 Budgeting: Grocery list for ₹100" },
+        { day: "Friday", grade: "Grade 6", activityA: "👕 Folding T-shirt & socks (military roll)", activityB: "💡 Changing a bulb (cardboard mock)" },
+        { day: "Friday", grade: "Grade 7", activityA: "👕 Ironing a handkerchief (cold/unplugged)", activityB: "🔩 Fixing a loose screw (practice board)" },
+        { day: "Friday", grade: "Grade 8", activityA: "🍎 Fruit Chaat (plastic knife)", activityB: "📖 Book repair (tape application)" },
+        
+        // SATURDAY - Creative & Life Skills / Entrepreneurship
+        { day: "Saturday", grade: "Nursery", activityA: "🎨 Finger painting (paper plate)", activityB: "🌀 Clay rolling (snake, ball)" },
+        { day: "Saturday", grade: "LKG", activityA: "🖐️ Paper handprint turkey/flower", activityB: "🧽 Sponge stamping (watercolor)" },
+        { day: "Saturday", grade: "UKG", activityA: "📄 Paper tearing collage (face)", activityB: "🏁 World flag coloring (choice)" },
+        { day: "Saturday", grade: "Grade 1", activityA: "🪴 Pot decoration (stickers/dots)", activityB: "🔖 DIY bookmark with tassel" },
+        { day: "Saturday", grade: "Grade 2", activityA: "♻️ Recycled bottle pen stand", activityB: "🌸 Origami paper flower" },
+        { day: "Saturday", grade: "Grade 3", activityA: "🐦 Milk carton bird feeder", activityB: "🌱 Seed planting (decorated cup)" },
+        { day: "Saturday", grade: "Grade 4", activityA: "💿 Best out of waste: CD to clock", activityB: "📰 Newspaper paper bag" },
+        { day: "Saturday", grade: "Grade 5", activityA: "🌿 Plant sapling (painted pot)", activityB: "🏮 Tin can lantern" },
+        { day: "Saturday", grade: "Grade 6", activityA: "🍄 Mini cement mushroom (safe mold)", activityB: "🧶 Rope wall hanging" },
+        { day: "Saturday", grade: "Grade 7", activityA: "🛒 Entrepreneurship stall (sell crafts)", activityB: "🌱 Plastic bottle planter" },
+        { day: "Saturday", grade: "Grade 8", activityA: "📊 Business stall (P&L calculation)", activityB: "🏙️ Sustainable city model (cardboard)" }
+    ];
+
+    // references
+    const tbody = document.getElementById("tableBody");
+    const dayFilter = document.getElementById("dayFilter");
+    const gradeFilter = document.getElementById("gradeFilter");
+    const resetBtn = document.getElementById("resetFilters");
+
+    function renderTable() {
+        const selectedDay = dayFilter.value;
+        const selectedGrade = gradeFilter.value;
+        
+        const filtered = curriculumData.filter(row => {
+            const matchDay = selectedDay === "all" || row.day === selectedDay;
+            const matchGrade = selectedGrade === "all" || row.grade === selectedGrade;
+            return matchDay && matchGrade;
+        });
+        
+        if(filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" class="no-results">✨ No matching activities. Adjust filters to see the full curriculum. ✨</td></tr>`;
+            return;
+        }
+        
+        let html = "";
+        for(let item of filtered) {
+            html += `<tr>
+                        <td class="day-cell">${item.day}</td>
+                        <td class="grade-cell">${item.grade}</td>
+                        <td class="activity"><div class="activity-item"><strong>🎯 A:</strong> ${item.activityA}</div></td>
+                        <td class="activity"><div class="activity-item"><strong>🤝 B:</strong> ${item.activityB}</div></td>
+                     </tr>`;
+        }
+        tbody.innerHTML = html;
+    }
+    
+    function resetFilters() {
+        dayFilter.value = "all";
+        gradeFilter.value = "all";
+        renderTable();
+    }
+    
+    dayFilter.addEventListener("change", renderTable);
+    gradeFilter.addEventListener("change", renderTable);
+    resetBtn.addEventListener("click", resetFilters);
+    
+    // initial render
+    renderTable();
+</script>
+</body>
+</html>
